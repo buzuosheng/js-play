@@ -1,15 +1,15 @@
 import Monaco from '@monaco-editor/react'
 import { useSelector, useDispatch } from 'react-redux'
 
-import { changeCode } from '../services/codeSlice'
+import { changeCode } from '../services/editorSlice'
 import { RootState } from '../services/store'
 import { Loading } from './Loading'
 
 const Editor = () => {
   const dispatch = useDispatch()
-  const text = useSelector<RootState>((state) => state.code.text)
-  const theme = useSelector<RootState>((state) => state.theme.theme)
-  const language = useSelector<RootState>((state) => state.language.language)
+  const text = useSelector<RootState>((state) => state.editor.text)
+  const theme = useSelector<RootState>((state) => state.editor.theme)
+  const language = useSelector<RootState>((state) => state.editor.language)
 
   return (
     <Monaco

@@ -3,7 +3,7 @@ import {
   changeLanguage,
   Language,
   LanguageState
-} from '../services/languageSlice'
+} from '../services/editorSlice'
 
 const Language: React.FC<LanguageState> = (props: { language: Language }) => {
   const dispatch = useDispatch()

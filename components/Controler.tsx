@@ -6,15 +6,20 @@ import { useBeforeunload } from 'react-beforeunload'
 
 import { RootState } from '../services/store'
 import LanguageComponent from './Language'
-import { languages, Language, changeLanguage } from '../services/languageSlice'
-import { changeTheme, Theme } from '../services/themeSlice'
+import {
+  languages,
+  Language,
+  changeLanguage,
+  changeTheme,
+  Theme,
+  changeCode
+} from '../services/editorSlice'
 import { useConfig } from '../hooks/useConfig'
-import { changeCode } from '../services/codeSlice'
 
 const Controler = () => {
-  const theme = useSelector<RootState>((state) => state.theme.theme)
-  const language = useSelector<RootState>((state) => state.language.language)
-  const code = useSelector<RootState>((state) => state.code.text)
+  const theme = useSelector<RootState>((state) => state.editor.theme)
+  const language = useSelector<RootState>((state) => state.editor.language)
+  const code = useSelector<RootState>((state) => state.editor.text)
   const dispatch = useDispatch()
 
   const [config, setConfig] = useConfig()
@@ -27,7 +32,7 @@ const Controler = () => {
     }
   }, [])
 
-  useBeforeunload((e) => {
+  useBeforeunload(() => {
     setConfig({
       theme: theme as Theme,
       language: language as Language,

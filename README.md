@@ -1,3 +1,2 @@
 ## js-play
 
-- [x] layout

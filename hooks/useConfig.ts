@@ -1,8 +1,7 @@
 import { useLocalStorage } from '@buzuosheng/use-localstorage'
 import { Dispatch } from 'react'
 
-import { Theme } from '../services/themeSlice'
-import { Language } from '../services/languageSlice'
+import { Theme, Language } from '../services/editorSlice'
 
 export interface Config {
   theme: Theme
@@ -17,7 +16,7 @@ const defaultConfig = {
 } as Config
 
 export const useConfig = (): [Config, Dispatch<Config>] => {
-  const [config, setConfig] = useLocalStorage('config', {
+  const [config, setConfig] = useLocalStorage('editor-config', {
     initialValue: defaultConfig,
     prefix: 'js-play:'
   })

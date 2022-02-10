@@ -1,8 +1,8 @@
 import { useSelector } from 'react-redux'
-import { RootState } from '../services/store'
 
+import { RootState } from '../services/store'
 import Editor from './Editor'
-;`flex {isRow? flex-row: flex-col}`
+
 
 const Main = () => {
   const isRow = useSelector<RootState>((state) => state.config.rowLayout)

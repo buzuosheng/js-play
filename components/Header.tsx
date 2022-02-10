@@ -1,3 +1,6 @@
+import { useLocalStorage } from '@buzuosheng/use-localstorage'
+import { useEffect } from 'react'
+import { useBeforeunload } from 'react-beforeunload'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { changeMode, changeRowLayout } from '../services/configSlice'
@@ -7,7 +10,31 @@ import Share from './Share'
 
 const Header = () => {
   const dispatch = useDispatch()
+  const mode = useSelector<RootState>((state) => state.config.mode)
   const isRow = useSelector<RootState>((state) => state.config.rowLayout)
+
+  const [config, setConfig] = useLocalStorage('config', {
+    prefix: 'js-play',
+    initialValue: {
+      mode: '',
+      rowLayout: true
+    }
+  })
+
+  useEffect(() => {
+    if (config) {
+      if (config.mode !== mode) dispatch(changeMode())
+      if (config.rowLayout !== isRow) dispatch(changeRowLayout())
+    }
+  }, [])
+
+  useBeforeunload(() => {
+    setConfig({
+      mode: mode as string,
+      rowLayout: isRow as boolean
+    })
+  })
+
   return (
     <header className="relative z-20 flex-none py-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center space-x-4 antialiased">
       <div className="flex-auto flex items-center min-w-0 space-x-6">
@@ -95,49 +122,6 @@ const Header = () => {
               ></path>
             </svg>
           </button>
-          {/* 只有预览模式 */}
-          {/* <button
-            type="button"
-            className="group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-gray-400/70 dark:focus-visible:ring-gray-500"
-          >
-            <span className="sr-only">Switch to preview-only layout</span>
-            <svg
-              width="42"
-              height="36"
-              viewBox="-8 -7 42 36"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="fill-gray-100 stroke-gray-400/70 hover:fill-gray-200 hover:stroke-gray-400 dark:fill-gray-400/20 dark:stroke-gray-500 dark:hover:fill-gray-400/30 dark:hover:stroke-gray-400"
-            >
-              <path
-                d="M23 17V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2Z"
-                fill="none"
-              ></path>
-            </svg>
-          </button>
-          // 响应式设计模式
-          <button
-            type="button"
-            className="hidden md:block group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-sky-400"
-          >
-            <span className="sr-only">Toggle responsive design mode</span>
-            <svg
-              width="42"
-              height="36"
-              viewBox="-8 -7 42 36"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              className="fill-sky-100 stroke-sky-500 dark:fill-sky-400/50 dark:stroke-sky-400"
-            >
-              <path
-                d="M15 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H4a1 1 0 0 0-1 1"
-                fill="none"
-              ></path>
-              <path d="M12 17V9a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h5a2 2 0 0 0 2-2Z"></path>
-            </svg>
-          </button> */}
         </div>
         <div className="hidden sm:block mx-6 lg:mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
         <button

@@ -16,5 +16,5 @@ const configSlice = createSlice({
   }
 })
 
-export default configSlice.reducer
 export const { changeMode, changeRowLayout } = configSlice.actions
+export default configSlice.reducer

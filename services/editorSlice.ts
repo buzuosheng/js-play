@@ -1,5 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
+export const themes = ['light', 'vs-dark']
+
+export type Theme = 'light' | 'vs-dark'
+
+export interface ThemeState {
+  theme: Theme
+}
+
 export const languages = [
   'c',
   'cpp',
@@ -51,17 +59,25 @@ export interface LanguageState {
   language: Language
 }
 
-export const languageSlice = createSlice({
-  name: 'language',
+const editorSlice = createSlice({
+  name: 'code',
   initialState: {
-    language: 'javascript'
-  } as LanguageState,
+    theme: 'light',
+    language: 'javascript',
+    text: ''
+  },
   reducers: {
+    changeTheme(state, action: PayloadAction<Theme>) {
+      state.theme = action.payload
+    },
     changeLanguage(state, action: PayloadAction<Language>) {
       state.language = action.payload
+    },
+    changeCode(state, action: PayloadAction<string>) {
+      state.text = action.payload
     }
   }
 })
 
-export const { changeLanguage } = languageSlice.actions
-export default languageSlice.reducer
+export const { changeTheme, changeLanguage, changeCode } = editorSlice.actions
+export default editorSlice.reducer

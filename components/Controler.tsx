@@ -22,6 +22,15 @@ const Controler = () => {
   const code = useSelector<RootState>((state) => state.editor.text)
   const dispatch = useDispatch()
 
+  function run(str: string): void {
+    const codeRun = new Function(str)
+    try {
+      codeRun()
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   const [config, setConfig] = useConfig()
 
   useEffect(() => {
@@ -89,6 +98,7 @@ const Controler = () => {
       </div>
       <div className="ml-6">
         <button
+          onClick={() => run(code as string)}
           disabled={language === 'javascript' ? false : true}
           className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none"
         >

@@ -4,6 +4,7 @@ import { useBeforeunload } from 'react-beforeunload'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { changeMode, changeRowLayout } from '../services/configSlice'
+import { changeTheme } from '../services/editorSlice'
 import { RootState } from '../services/store'
 import Controler from './Controler'
 import Share from './Share'
@@ -14,7 +15,7 @@ const Header = () => {
   const isRow = useSelector<RootState>((state) => state.config.rowLayout)
 
   const [config, setConfig] = useLocalStorage('config', {
-    prefix: 'js-play',
+    prefix: 'js-play:',
     initialValue: {
       mode: '',
       rowLayout: true
@@ -126,7 +127,11 @@ const Header = () => {
         <div className="hidden sm:block mx-6 lg:mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
         <button
           type="button"
-          onClick={() => dispatch(changeMode())}
+          onClick={() => {
+            if (mode === 'dark') dispatch(changeTheme('light'))
+            else dispatch(changeTheme('vs-dark'))
+            dispatch(changeMode())
+          }}
           className="ml-4 sm:ml-0 ring-1 ring-gray-900/5 shadow-sm hover:bg-gray-50 dark:ring-0 dark:bg-gray-800 dark:hover:bg-gray-700 dark:shadow-highlight/4 group focus:outline-none focus-visible:ring-2 rounded-md focus-visible:ring-sky-500 dark:focus-visible:ring-2 dark:focus-visible:ring-gray-400"
         >
           <span className="sr-only">

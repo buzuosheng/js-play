@@ -5,14 +5,14 @@ import { useEffect } from 'react'
 import { useBeforeunload } from 'react-beforeunload'
 
 import { RootState } from '../services/store'
-import LanguageComponent from './Language'
 import {
-  languages,
   Language,
   changeLanguage,
   changeTheme,
   Theme,
-  changeCode
+  changeCode,
+  addLog,
+  clearLog
 } from '../services/editorSlice'
 import { useConfig } from '../hooks/useConfig'
 
@@ -23,11 +23,31 @@ const Controler = () => {
   const dispatch = useDispatch()
 
   function run(str: string): void {
-    const codeRun = new Function(str)
+    const log = `
+      let temp = []
+      const log = console.log
+      console.log = function(str) {
+        log(str)
+        temp.push(str)
+      }
+      ${str}
+      return temp
+      `
+    const codeRun = new Function(log)
     try {
-      codeRun()
+      const res: any[] = codeRun()
+      dispatch(
+        addLog(
+          res.map((value) =>
+            value === undefined
+              ? { isError: false, value: 'undefined' }
+              : { isError: false, value: JSON.stringify(value) }
+          )
+        )
+      )
     } catch (e) {
-      console.log(e)
+      const err = e as Error
+      dispatch(addLog([{ isError: true, value: err.message }]))
     }
   }
 
@@ -63,22 +83,25 @@ const Controler = () => {
             }
           >
             <div
-              className="px-4 pb-1 border-solid border-t-2 outline-none hover:bg-green-300 cursor-pointer"
+              className="px-4 pb-1 border-solid border-t-2 outline-none text-center hover:bg-green-300 cursor-pointer"
               onClick={() => dispatch(changeTheme('light'))}
             >
-              'light'
+              light
             </div>
             <div
-              className="px-4 pb-1 border-solid border-t-2 outline-none hover:bg-green-300 cursor-pointer"
+              className="px-4 pb-1 border-solid border-t-2 outline-none text-center hover:bg-green-300 cursor-pointer"
               onClick={() => dispatch(changeTheme('vs-dark'))}
             >
-              'vs-dark'
+              vs-dark
             </div>
           </Popup>
         )}
       </div>
       <div className="ml-6" suppressHydrationWarning={true}>
-        {process.browser && (
+        <button className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none">
+          Javascript
+        </button>
+        {/* {process.browser && (
           <Popup
             on="hover"
             position="bottom center"
@@ -94,12 +117,12 @@ const Controler = () => {
               ))}
             </div>
           </Popup>
-        )}
+        )} */}
       </div>
       <div className="ml-6">
         <button
           onClick={() => run(code as string)}
-          disabled={language === 'javascript' ? false : true}
+          // disabled={language === 'javascript' ? false : true}
           className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none"
         >
           run

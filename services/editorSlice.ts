@@ -59,12 +59,18 @@ export interface LanguageState {
   language: Language
 }
 
+export interface Log{
+  isError: boolean,
+  value: string
+}
+
 const editorSlice = createSlice({
   name: 'code',
   initialState: {
     theme: 'light',
     language: 'javascript',
-    text: ''
+    text: '',
+    log: [] as Log[]
   },
   reducers: {
     changeTheme(state, action: PayloadAction<Theme>) {
@@ -75,9 +81,21 @@ const editorSlice = createSlice({
     },
     changeCode(state, action: PayloadAction<string>) {
       state.text = action.payload
+    },
+    addLog(state, action: PayloadAction<Log[]>) {
+      state.log = [...state.log, ...action.payload]
+    },
+    clearLog(state) {
+      state.log = []
     }
   }
 })
 
-export const { changeTheme, changeLanguage, changeCode } = editorSlice.actions
+export const {
+  changeTheme,
+  changeLanguage,
+  changeCode,
+  addLog,
+  clearLog
+} = editorSlice.actions
 export default editorSlice.reducer

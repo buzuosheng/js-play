@@ -77,7 +77,7 @@ const Controler = () => {
             on="hover"
             position="bottom center"
             trigger={
-              <button className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none">
+              <button className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500 hover:bg-sky-400 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none">
                 {theme as string}
               </button>
             }
@@ -98,7 +98,7 @@ const Controler = () => {
         )}
       </div>
       <div className="ml-6" suppressHydrationWarning={true}>
-        <button className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none">
+        <button className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-1 w-20 bg-sky-500 hover:bg-sky-400 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none">
           Javascript
         </button>
         {/* {process.browser && (
@@ -123,7 +123,7 @@ const Controler = () => {
         <button
           onClick={() => run(code as string)}
           // disabled={language === 'javascript' ? false : true}
-          className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500/40 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none"
+          className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-3 w-20 bg-sky-500 hover:bg-sky-400 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none"
         >
           run
         </button>

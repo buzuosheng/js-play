@@ -1,7 +1,9 @@
-import { useLocalStorage } from '@buzuosheng/use-localstorage'
 import { useEffect } from 'react'
 import { useBeforeunload } from 'react-beforeunload'
+import { useLocalStorage } from '@buzuosheng/use-localstorage'
 import { useDispatch, useSelector } from 'react-redux'
+// import dom2img from 'dom-to-image'
+import Monaco from '@monaco-editor/react'
 
 import { changeMode, changeRowLayout } from '../services/configSlice'
 import { changeTheme } from '../services/editorSlice'
@@ -13,6 +15,21 @@ const Header = () => {
   const dispatch = useDispatch()
   const mode = useSelector<RootState>((state) => state.config.mode)
   const isRow = useSelector<RootState>((state) => state.config.rowLayout)
+  // const text = useSelector<RootState>((state) => state.editor.text)
+
+  // const node = (
+  //   <div className='flex flex-col justify-center items-start bg-vsdark'>
+  //     <Monaco
+  //       width=""
+  //       height=""
+  //       theme="vs-dark"
+  //       defaultLanguage="javascript"
+  //       defaultValue="// some comment"
+  //       value={text as string}
+  //       language="javascript"
+  //     />
+  //   </div>
+  // )
 
   const [config, setConfig] = useLocalStorage('config', {
     prefix: 'js-play:',
@@ -35,6 +52,105 @@ const Header = () => {
       rowLayout: isRow as boolean
     })
   })
+
+  // const getCarbonImage = async (
+  //   { format, squared = false, exportSize = 2 } = { format: 'png' }
+  // ) => {
+  //   let node: HTMLDivElement
+  //   // const node = editorRef.current
+  //   const width = node!.offsetWidth * exportSize
+  //   const height = node!.offsetHeight * exportSize
+
+  //   const config = {
+  //     style: {
+  //       transform: `scale(${exportSize})`,
+  //       'transform-origin': 'center',
+  //       background: squared ? 'rgba(187,187,187,1)' : 'none'
+  //     },
+  //     // filter: (n) => {
+  //     //   if (n.className) {
+  //     //     const className = String(n.className)
+  //     //     if (className.includes('eliminateOnRender')) {
+  //     //       return false
+  //     //     }
+  //     //     if (className.includes('CodeMirror-cursors')) {
+  //     //       return false
+  //     //     }
+  //     //   }
+  //     //   return true
+  //     // },
+  //     width,
+  //     height
+  //   }
+
+  //   if (format === 'svg') {
+  //     return dom2img
+  //       .toSvg(node!, config)
+  //       .then((dataURL) =>
+  //         dataURL
+  //           .replace(/&nbsp;/g, '&#160;')
+  //           // https://github.com/tsayen/dom-to-image/blob/fae625bce0970b3a039671ea7f338d05ecb3d0e8/src/dom-to-image.js#L551
+  //           .replace(/%23/g, '#')
+  //           .replace(/%0A/g, '\n')
+  //           // https://stackoverflow.com/questions/7604436/xmlparseentityref-no-name-warnings-while-loading-xml-into-a-php-file
+  //           .replace(/&(?!#?[a-z0-9]+;)/g, '&amp;')
+  //           // remove other fonts which are not used
+  //           .replace(
+  //             // current font-family used
+  //             new RegExp(
+  //               '@font-face\\s+{\\s+font-family: (?!"*' + 'Hack' + ').*?}',
+  //               'g'
+  //             ),
+  //             ''
+  //           )
+  //       )
+  //       .then((uri) => uri.slice(uri.indexOf(',') + 1))
+  //       .then((data) => new Blob([data], { type: 'image/svg+xml' }))
+  //   }
+
+  //   if (format === 'blob') {
+  //     return dom2img.toBlob(node!, config)
+  //   }
+
+  //   // Twitter and Imgur needs regular dataURLs
+  //   return dom2img.toPng(node!, config)
+  // }
+
+  // const exportImage = (format = 'blob', open: boolean) => {
+  //   const link = document.createElement('a')
+
+  //   const prefix = 'export'
+
+  //   return getCarbonImage({ format })
+  //     .then((blob) => window.URL.createObjectURL(blob as Blob))
+  //     .then((url) => {
+  //       if (!open) {
+  //         link.download = `${prefix}.${format === 'svg' ? 'svg' : 'png'}`
+  //       }
+  //       if (
+  //         // isFirefox
+  //         window.navigator.userAgent.indexOf('Firefox') !== -1 &&
+  //         window.navigator.userAgent.indexOf('Chrome') === -1
+  //       ) {
+  //         link.target = '_blank'
+  //       }
+  //       link.href = url
+  //       document.body.appendChild(link)
+  //       link.click()
+  //       link.remove()
+  //     })
+  // }
+
+  // const copyImage = () =>
+  //   getCarbonImage({ format: 'blob' })
+  //     .then((blob) =>
+  //       navigator.clipboard.write([
+  //         new window.ClipboardItem({
+  //           [(blob as Blob).type]: blob
+  //         })
+  //       ])
+  //     )
+  //     .catch(console.error)
 
   return (
     <header className="relative z-20 flex-none py-3 pl-5 pr-3 sm:pl-6 sm:pr-4 md:pr-3.5 lg:px-6 flex items-center space-x-4 antialiased">
@@ -62,7 +178,14 @@ const Header = () => {
         </svg>
         {/* TODO 分享功能 */}
         {/* <Share /> */}
+        {/* <button
+          className="relative flex-none rounded-md text-sm font-semibold leading-6 py-1.5 px-1 w-20 bg-sky-500 hover:bg-sky-400 text-white dark:bg-gray-800 dark:text-white/40 cursor-printer shadow-sm dark:shadow-none"
+          onClick={() => exportImage('blob', true)}
+        >
+          Image
+        </button> */}
       </div>
+      {/* 控制主题，语言 */}
       <Controler />
       <div className="hidden sm:block mx-6 lg:mx-4 w-px h-6 bg-gray-200 dark:bg-gray-700"></div>
       <div className="flex items-center">

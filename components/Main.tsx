@@ -1,3 +1,4 @@
+import React from 'react'
 import { useEffect, useRef } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -10,6 +11,7 @@ const Main = () => {
   const isRow = useSelector<RootState>((state) => state.config.rowLayout)
   const list = useSelector<RootState>((state) => state.editor.log)
   const dark = useSelector<RootState>((state) => state.config.mode)
+
   const dispatch = useDispatch()
 
   const scrollRef = useRef<HTMLDivElement>(null)
@@ -35,11 +37,14 @@ const Main = () => {
       <div
         className={`flex flex-1 flex-col flexno ${
           isRow ? 'w-1/2' : 'w-full'
-        } h-full -mt-1px p-2  outline-none bg-gray-100 dark:bg-gray-700 text-lg`}
+        } h-full -mt-1px p-2  outline-none bg-gray-50 dark:bg-gray-700 text-lg`}
       >
         <div className="flex flex-nowrap flex-row justify-between items-center h-10 px-6 py-4 border-b-2 select-none font-semibold leading-6">
-          <span className="text-2xl ">Console</span>
-          <button className="text-2xl" onClick={() => dispatch(clearLog())}>
+          <span className="text-2xl text-sky-500">Console</span>
+          <button
+            className="text-2xl text-sky-500 hover:text-sky-400"
+            onClick={() => dispatch(clearLog())}
+          >
             Clear
           </button>
         </div>

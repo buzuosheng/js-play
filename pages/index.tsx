@@ -1,5 +1,4 @@
-import { Provider } from 'react-redux'
-import { useSelector } from 'react-redux'
+import { Provider,useSelector } from 'react-redux'
 
 import Header from '../components/Header'
 import Main from '../components/Main'

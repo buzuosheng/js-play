@@ -59,8 +59,8 @@ export interface LanguageState {
   language: Language
 }
 
-export interface Log{
-  isError: boolean,
+export interface Log {
+  isError: boolean
   value: string
 }
 
@@ -91,11 +91,6 @@ const editorSlice = createSlice({
   }
 })
 
-export const {
-  changeTheme,
-  changeLanguage,
-  changeCode,
-  addLog,
-  clearLog
-} = editorSlice.actions
+export const { changeTheme, changeLanguage, changeCode, addLog, clearLog } =
+  editorSlice.actions
 export default editorSlice.reducer
